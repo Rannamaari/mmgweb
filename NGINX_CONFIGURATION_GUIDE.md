@@ -9,6 +9,7 @@ This guide explains the **enterprise-grade Nginx configuration** for your MMG we
 ## 🚀 Quick Setup
 
 ### **Automatic Configuration (Recommended)**
+
 ```bash
 # The SSL setup script automatically configures Nginx
 wget https://raw.githubusercontent.com/Rannamaari/mmgweb/main/ssl-setup.sh
@@ -17,6 +18,7 @@ sudo ./ssl-setup.sh
 ```
 
 ### **Manual Configuration**
+
 ```bash
 # Download the configuration
 wget -O /etc/nginx/sites-available/mmgweb https://raw.githubusercontent.com/Rannamaari/mmgweb/main/nginx-config.conf
@@ -35,6 +37,7 @@ systemctl reload nginx
 ## 🛡️ Security Features
 
 ### **SSL/TLS Configuration**
+
 ```nginx
 # Modern SSL protocols and ciphers
 ssl_protocols TLSv1.2 TLSv1.3;
@@ -51,6 +54,7 @@ ssl_stapling_verify on;
 ```
 
 ### **Security Headers**
+
 ```nginx
 # Prevent clickjacking
 add_header X-Frame-Options "SAMEORIGIN" always;
@@ -72,6 +76,7 @@ add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; prelo
 ```
 
 ### **File Access Protection**
+
 ```nginx
 # Deny access to sensitive files
 location ~ /\. {
@@ -100,6 +105,7 @@ location ~ ^/(vendor|storage|bootstrap/cache)/ {
 ## ⚡ Performance Features
 
 ### **Gzip Compression**
+
 ```nginx
 gzip on;
 gzip_vary on;
@@ -119,6 +125,7 @@ gzip_types
 ```
 
 ### **Static File Caching**
+
 ```nginx
 # Cache static files for 1 year
 location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
@@ -129,6 +136,7 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
 ```
 
 ### **HTTP/2 Support**
+
 ```nginx
 # Enable HTTP/2 for better performance
 listen 443 ssl http2;
@@ -140,6 +148,7 @@ listen [::]:443 ssl http2;
 ## 🔒 Rate Limiting
 
 ### **API Rate Limiting**
+
 ```nginx
 # Define rate limiting zones
 limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
@@ -164,6 +173,7 @@ location /pos {
 ## 🏗️ Laravel-Specific Configuration
 
 ### **PHP-FPM Configuration**
+
 ```nginx
 # Upstream for PHP-FPM
 upstream php-fpm {
@@ -180,7 +190,7 @@ location ~ \.php$ {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_param PATH_INFO $fastcgi_path_info;
     fastcgi_param HTTP_PROXY "";
-    
+
     # Security headers for PHP
     fastcgi_hide_header X-Powered-By;
     fastcgi_read_timeout 300;
@@ -188,6 +198,7 @@ location ~ \.php$ {
 ```
 
 ### **Laravel Routing**
+
 ```nginx
 # Main location block for Laravel
 location / {
@@ -200,26 +211,28 @@ location / {
 ## 🌐 Domain Configuration
 
 ### **HTTP to HTTPS Redirect**
+
 ```nginx
 # HTTP Server (redirects to HTTPS)
 server {
     listen 80;
     listen [::]:80;
     server_name garage.micronet.mv www.garage.micronet.mv;
-    
+
     # Redirect all HTTP traffic to HTTPS
     return 301 https://$server_name$request_uri;
 }
 ```
 
 ### **HTTPS Server**
+
 ```nginx
 # HTTPS Server
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name garage.micronet.mv www.garage.micronet.mv;
-    
+
     # SSL Configuration
     ssl_certificate /etc/letsencrypt/live/garage.micronet.mv/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/garage.micronet.mv/privkey.pem;
@@ -231,6 +244,7 @@ server {
 ## 📊 Monitoring & Logging
 
 ### **Access and Error Logs**
+
 ```nginx
 # Logging configuration
 access_log /var/log/nginx/mmgweb_access.log;
@@ -238,6 +252,7 @@ error_log /var/log/nginx/mmgweb_error.log;
 ```
 
 ### **Log Monitoring Commands**
+
 ```bash
 # Monitor access logs
 tail -f /var/log/nginx/mmgweb_access.log
@@ -257,6 +272,7 @@ grep -i ssl /var/log/nginx/mmgweb_access.log
 ## 🔧 Configuration Management
 
 ### **Backup Configuration**
+
 ```bash
 # Backup current configuration
 cp /etc/nginx/sites-available/mmgweb /etc/nginx/sites-available/mmgweb.backup
@@ -268,6 +284,7 @@ systemctl reload nginx
 ```
 
 ### **Test Configuration**
+
 ```bash
 # Test Nginx configuration
 nginx -t
@@ -286,6 +303,7 @@ nginx -T | grep -A 10 -B 10 "server_name"
 ### **Common Issues**
 
 **Problem**: 502 Bad Gateway
+
 ```bash
 # Check PHP-FPM status
 systemctl status php8.3-fpm
@@ -298,6 +316,7 @@ systemctl restart php8.3-fpm
 ```
 
 **Problem**: SSL Certificate Errors
+
 ```bash
 # Check certificate validity
 openssl x509 -in /etc/letsencrypt/live/garage.micronet.mv/fullchain.pem -text -noout
@@ -310,6 +329,7 @@ certbot renew
 ```
 
 **Problem**: Permission Denied
+
 ```bash
 # Check file permissions
 ls -la /var/www/mmgweb/public/
@@ -325,6 +345,7 @@ chmod -R 775 /var/www/mmgweb/storage
 ## 📈 Performance Optimization
 
 ### **SSL Performance**
+
 ```nginx
 # SSL session caching
 ssl_session_cache shared:SSL:10m;
@@ -336,6 +357,7 @@ ssl_stapling_verify on;
 ```
 
 ### **Static File Optimization**
+
 ```nginx
 # Cache static files
 location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
@@ -346,6 +368,7 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
 ```
 
 ### **Gzip Compression**
+
 ```nginx
 # Enable compression for text files
 gzip on;
@@ -359,6 +382,7 @@ gzip_comp_level 6;
 ## 🔍 Configuration Validation
 
 ### **Test Your Configuration**
+
 ```bash
 # Test Nginx configuration
 nginx -t
@@ -374,6 +398,7 @@ https://www.ssllabs.com/ssltest/analyze.html?d=garage.micronet.mv
 ```
 
 ### **Performance Testing**
+
 ```bash
 # Test with Apache Bench
 ab -n 1000 -c 10 https://garage.micronet.mv/
@@ -387,6 +412,7 @@ curl -w "@curl-format.txt" -o /dev/null -s https://garage.micronet.mv/
 ## 📞 Quick Reference
 
 ### **Essential Commands**
+
 ```bash
 # Test configuration
 nginx -t
@@ -408,9 +434,10 @@ tail -f /var/log/nginx/mmgweb_access.log
 ```
 
 ### **Configuration Files**
-- **Main config**: `/etc/nginx/nginx.conf`
-- **Site config**: `/etc/nginx/sites-available/mmgweb`
-- **SSL certificates**: `/etc/letsencrypt/live/garage.micronet.mv/`
-- **Logs**: `/var/log/nginx/mmgweb_*.log`
+
+-   **Main config**: `/etc/nginx/nginx.conf`
+-   **Site config**: `/etc/nginx/sites-available/mmgweb`
+-   **SSL certificates**: `/etc/letsencrypt/live/garage.micronet.mv/`
+-   **Logs**: `/var/log/nginx/mmgweb_*.log`
 
 Your MMG website now has **enterprise-grade Nginx configuration** with SSL, security, and performance optimization! 🚀
