@@ -9,11 +9,13 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ## 🚀 Quick Start
 
 ### **1. Access User Management**
-- **Admin Panel**: `http://localhost/admin`
-- **Login**: `admin@mmg.mv` / `password`
-- **Navigate**: Users & Roles sections
+
+-   **Admin Panel**: `http://localhost/admin`
+-   **Login**: `admin@mmg.mv` / `password`
+-   **Navigate**: Users & Roles sections
 
 ### **2. Create New User**
+
 1. Go to **Users** section
 2. Click **Create User**
 3. Fill in user details
@@ -21,6 +23,7 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 5. Save
 
 ### **3. Assign Roles**
+
 1. Go to **Roles** section
 2. Select a role
 3. Configure permissions
@@ -31,70 +34,77 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ## 🛡️ Available Roles
 
 ### **1. Super Admin** 🔴
-- **Access**: Full system access
-- **Permissions**: All 25 permissions
-- **Use Case**: System administrator
-- **Features**:
-  - Manage all users and roles
-  - Access all admin features
-  - Full POS and booking access
-  - System settings
+
+-   **Access**: Full system access
+-   **Permissions**: All 25 permissions
+-   **Use Case**: System administrator
+-   **Features**:
+    -   Manage all users and roles
+    -   Access all admin features
+    -   Full POS and booking access
+    -   System settings
 
 ### **2. Admin** 🟠
-- **Access**: Administrative access
-- **Permissions**: 22 permissions
-- **Use Case**: General manager
-- **Features**:
-  - Manage users (except roles)
-  - Access most admin features
-  - Full POS and booking access
-  - Reports and analytics
+
+-   **Access**: Administrative access
+-   **Permissions**: 22 permissions
+-   **Use Case**: General manager
+-   **Features**:
+    -   Manage users (except roles)
+    -   Access most admin features
+    -   Full POS and booking access
+    -   Reports and analytics
 
 ### **3. POS Manager** 🟡
-- **Access**: POS system + basic admin
-- **Permissions**: 16 permissions
-- **Use Case**: Sales manager
-- **Features**:
-  - Full POS operations
-  - Manage products and customers
-  - View invoices and reports
-  - Basic booking access
+
+-   **Access**: POS system + basic admin
+-   **Permissions**: 16 permissions
+-   **Use Case**: Sales manager
+-   **Features**:
+    -   Full POS operations
+    -   Manage products and customers
+    -   View invoices and reports
+    -   Basic booking access
 
 ### **4. POS Operator** 🟢
-- **Access**: Basic POS operations
-- **Permissions**: 9 permissions
-- **Use Case**: Cashier/sales staff
-- **Features**:
-  - Create sales transactions
-  - Manage customers
-  - View products
-  - Basic booking access
+
+-   **Access**: Basic POS operations
+-   **Permissions**: 9 permissions
+-   **Use Case**: Cashier/sales staff
+-   **Features**:
+    -   Create sales transactions
+    -   Manage customers
+    -   View products
+    -   Basic booking access
 
 ### **5. Booking Manager** 🔵
-- **Access**: Booking system focus
-- **Permissions**: 8 permissions
-- **Use Case**: Service coordinator
-- **Features**:
-  - Full booking management
-  - Create, edit, delete bookings
-  - View booking reports
-  - Profile management
+
+-   **Access**: Booking system focus
+-   **Permissions**: 8 permissions
+-   **Use Case**: Service coordinator
+-   **Features**:
+    -   Full booking management
+    -   Create, edit, delete bookings
+    -   View booking reports
+    -   Profile management
 
 ### **6. Viewer** ⚪
-- **Access**: Read-only access
-- **Permissions**: 5 permissions
-- **Use Case**: Reports viewer
-- **Features**:
-  - View dashboard
-  - Access reports
-  - View bookings
-  - Profile viewing
+
+-   **Access**: Read-only access
+-   **Permissions**: 5 permissions
+-   **Use Case**: Reports viewer
+-   **Features**:
+    -   View dashboard
+    -   Access reports
+    -   View bookings
+    -   Profile viewing
 
 ---
 
 ## 🔑 Permission System
 
 ### **Admin Panel Permissions**
+
 ```
 ✅ admin.access          - Access Admin Panel
 ✅ admin.dashboard       - View Dashboard
@@ -111,6 +121,7 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ```
 
 ### **POS System Permissions**
+
 ```
 ✅ pos.access            - Access POS System
 ✅ pos.sales             - Create Sales
@@ -121,6 +132,7 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ```
 
 ### **Booking System Permissions**
+
 ```
 ✅ booking.access        - Access Booking System
 ✅ booking.create        - Create Bookings
@@ -130,6 +142,7 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ```
 
 ### **General Permissions**
+
 ```
 ✅ profile.edit          - Edit Own Profile
 ✅ profile.view          - View Own Profile
@@ -142,17 +155,19 @@ The MMG User Management System provides **role-based access control** (RBAC) for
 ### **Creating Users**
 
 #### **Via Admin Panel**
+
 1. **Navigate**: Admin Panel → Users
 2. **Click**: "Create User"
 3. **Fill Form**:
-   - **Name**: Full name
-   - **Email**: Unique email address
-   - **Password**: Minimum 8 characters
-   - **Confirm Password**: Must match
-   - **Roles**: Select appropriate roles
+    - **Name**: Full name
+    - **Email**: Unique email address
+    - **Password**: Minimum 8 characters
+    - **Confirm Password**: Must match
+    - **Roles**: Select appropriate roles
 4. **Save**: User is created
 
 #### **Via Command Line**
+
 ```bash
 # Create user with specific role
 php artisan tinker
@@ -169,6 +184,7 @@ $user->roles()->attach($posManagerRole->id);
 ```
 
 ### **Editing Users**
+
 1. **Navigate**: Admin Panel → Users
 2. **Click**: Edit button (pencil icon)
 3. **Modify**: Any user details
@@ -176,6 +192,7 @@ $user->roles()->attach($posManagerRole->id);
 5. **Save**: Changes applied
 
 ### **Deleting Users**
+
 1. **Navigate**: Admin Panel → Users
 2. **Select**: Users to delete
 3. **Click**: Delete button
@@ -188,17 +205,19 @@ $user->roles()->attach($posManagerRole->id);
 ### **Creating Custom Roles**
 
 #### **Via Admin Panel**
+
 1. **Navigate**: Admin Panel → Roles
 2. **Click**: "Create Role"
 3. **Fill Form**:
-   - **Name**: Display name
-   - **Slug**: Unique identifier (lowercase, hyphens)
-   - **Description**: Role purpose
-   - **Permissions**: Select required permissions
-   - **Active**: Enable/disable role
+    - **Name**: Display name
+    - **Slug**: Unique identifier (lowercase, hyphens)
+    - **Description**: Role purpose
+    - **Permissions**: Select required permissions
+    - **Active**: Enable/disable role
 4. **Save**: Role is created
 
 #### **Via Code**
+
 ```php
 // Create custom role
 $customRole = App\Models\Role::create([
@@ -219,16 +238,18 @@ $customRole = App\Models\Role::create([
 ```
 
 ### **Editing Roles**
+
 1. **Navigate**: Admin Panel → Roles
 2. **Click**: Edit button
 3. **Modify**: Role details and permissions
 4. **Save**: Changes applied
 
 ### **Role Permissions**
-- **View**: See assigned permissions
-- **Edit**: Modify permission list
-- **Search**: Find specific permissions
-- **Bulk**: Select multiple permissions
+
+-   **View**: See assigned permissions
+-   **Edit**: Modify permission list
+-   **Search**: Find specific permissions
+-   **Bulk**: Select multiple permissions
 
 ---
 
@@ -237,6 +258,7 @@ $customRole = App\Models\Role::create([
 ### **Permission Checking**
 
 #### **In Controllers**
+
 ```php
 // Check single permission
 if (auth()->user()->hasPermission('pos.sales')) {
@@ -255,6 +277,7 @@ if (auth()->user()->hasAllPermissions(['pos.access', 'pos.sales'])) {
 ```
 
 #### **In Blade Templates**
+
 ```php
 @if(auth()->user()->hasPermission('admin.reports'))
     <a href="/admin/reports">View Reports</a>
@@ -268,6 +291,7 @@ if (auth()->user()->hasAllPermissions(['pos.access', 'pos.sales'])) {
 ```
 
 #### **In Routes**
+
 ```php
 // Protect routes with middleware
 Route::middleware(['auth', 'permission:admin.users'])->group(function () {
@@ -282,6 +306,7 @@ Route::middleware(['auth', 'permission:pos.access'])->group(function () {
 ### **Access Control**
 
 #### **Filament Panel Access**
+
 ```php
 // In User model
 public function canAccessPanel(Panel $panel): bool
@@ -291,6 +316,7 @@ public function canAccessPanel(Panel $panel): bool
 ```
 
 #### **API Protection**
+
 ```php
 // Protect API endpoints
 Route::middleware(['auth:sanctum', 'permission:pos.sales'])->post('/api/sales', [SalesController::class, 'store']);
@@ -301,26 +327,30 @@ Route::middleware(['auth:sanctum', 'permission:pos.sales'])->post('/api/sales', 
 ## 📊 User Analytics
 
 ### **User Statistics**
-- **Total Users**: Count of all users
-- **Active Users**: Users with active roles
-- **Role Distribution**: Users per role
-- **Recent Activity**: Last login times
+
+-   **Total Users**: Count of all users
+-   **Active Users**: Users with active roles
+-   **Role Distribution**: Users per role
+-   **Recent Activity**: Last login times
 
 ### **Permission Analytics**
-- **Most Used Permissions**: Popular features
-- **Permission Gaps**: Missing permissions
-- **Role Efficiency**: Permission utilization
+
+-   **Most Used Permissions**: Popular features
+-   **Permission Gaps**: Missing permissions
+-   **Role Efficiency**: Permission utilization
 
 ### **Security Monitoring**
-- **Login Attempts**: Failed login tracking
-- **Permission Denials**: Access control logs
-- **Role Changes**: Audit trail
+
+-   **Login Attempts**: Failed login tracking
+-   **Permission Denials**: Access control logs
+-   **Role Changes**: Audit trail
 
 ---
 
 ## 🚨 Best Practices
 
 ### **User Management**
+
 1. **Strong Passwords**: Minimum 8 characters, mixed case
 2. **Email Verification**: Verify all user emails
 3. **Role Assignment**: Assign minimal required roles
@@ -328,6 +358,7 @@ Route::middleware(['auth:sanctum', 'permission:pos.sales'])->post('/api/sales', 
 5. **Account Lockout**: Implement failed login limits
 
 ### **Role Design**
+
 1. **Principle of Least Privilege**: Minimum required permissions
 2. **Role Hierarchy**: Clear permission progression
 3. **Custom Roles**: Create specific business roles
@@ -335,6 +366,7 @@ Route::middleware(['auth:sanctum', 'permission:pos.sales'])->post('/api/sales', 
 5. **Documentation**: Document role purposes
 
 ### **Security**
+
 1. **Regular Audits**: Review permissions quarterly
 2. **Access Reviews**: Validate user access needs
 3. **Incident Response**: Plan for security incidents
@@ -348,6 +380,7 @@ Route::middleware(['auth:sanctum', 'permission:pos.sales'])->post('/api/sales', 
 ### **Common Issues**
 
 #### **User Can't Access Admin Panel**
+
 ```bash
 # Check user permissions
 php artisan tinker
@@ -356,6 +389,7 @@ echo $user->hasPermission('admin.access') ? 'Has access' : 'No access';
 ```
 
 #### **Role Not Working**
+
 ```bash
 # Check role assignment
 $user = App\Models\User::where('email', 'user@mmg.mv')->first();
@@ -364,6 +398,7 @@ echo "Permissions: " . implode(', ', $user->getAllPermissions());
 ```
 
 #### **Permission Denied**
+
 ```bash
 # Check specific permission
 $user = App\Models\User::where('email', 'user@mmg.mv')->first();
@@ -372,6 +407,7 @@ echo $user->hasPermission($permission) ? "Has {$permission}" : "Missing {$permis
 ```
 
 ### **Debug Commands**
+
 ```bash
 # List all users and roles
 php artisan tinker --execute="
@@ -393,6 +429,7 @@ php artisan tinker --execute="
 ## 📞 Quick Reference
 
 ### **Essential Commands**
+
 ```bash
 # Create user
 php artisan tinker
@@ -409,18 +446,20 @@ $user->getAllPermissions();
 ```
 
 ### **Role Slugs**
-- `super-admin` - Full access
-- `admin` - Administrative access
-- `pos-manager` - POS management
-- `pos-operator` - Basic POS operations
-- `booking-manager` - Booking management
-- `viewer` - Read-only access
+
+-   `super-admin` - Full access
+-   `admin` - Administrative access
+-   `pos-manager` - POS management
+-   `pos-operator` - Basic POS operations
+-   `booking-manager` - Booking management
+-   `viewer` - Read-only access
 
 ### **Key Permissions**
-- `admin.access` - Admin panel access
-- `pos.access` - POS system access
-- `booking.access` - Booking system access
-- `admin.users` - User management
-- `admin.roles` - Role management
+
+-   `admin.access` - Admin panel access
+-   `pos.access` - POS system access
+-   `booking.access` - Booking system access
+-   `admin.users` - User management
+-   `admin.roles` - Role management
 
 Your MMG User Management System is now **fully operational** with role-based access control! 👥🔐

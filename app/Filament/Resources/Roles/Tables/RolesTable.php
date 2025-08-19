@@ -17,19 +17,19 @@ class RolesTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('slug')
                     ->searchable()
                     ->sortable()
                     ->copyable()
                     ->badge()
                     ->color('gray'),
-                    
+
                 TextColumn::make('description')
                     ->limit(50)
                     ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
-                    
+
                 BadgeColumn::make('permissions')
                     ->label('Permissions')
                     ->colors(['primary', 'success', 'warning'])
@@ -41,12 +41,12 @@ class RolesTable
                         }
                         return [];
                     }),
-                    
+
                 BadgeColumn::make('users_count')
                     ->label('Users')
                     ->counts('users')
                     ->color('info'),
-                    
+
                 BadgeColumn::make('is_active')
                     ->label('Status')
                     ->boolean()
@@ -54,12 +54,12 @@ class RolesTable
                     ->falseColor('danger')
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle'),
-                    
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                    
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -77,7 +77,7 @@ class RolesTable
                 Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil')
-                    ->url(fn ($record) => route('filament.admin.resources.roles.edit', $record)),
+                    ->url(fn($record) => route('filament.admin.resources.roles.edit', $record)),
             ])
             ->bulkActions([
                 Action::make('delete')

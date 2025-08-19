@@ -42,7 +42,7 @@ if ($admin) {
         'admin.users',
         'pos.sales'
     ];
-    
+
     foreach ($testPermissions as $permission) {
         $hasPermission = $admin->hasPermission($permission);
         $status = $hasPermission ? '✅' : '❌';
@@ -62,7 +62,7 @@ try {
             'email_verified_at' => now(),
         ]
     );
-    
+
     // Assign POS Operator role
     $posOperatorRole = Role::where('slug', 'pos-operator')->first();
     if ($posOperatorRole) {
@@ -70,7 +70,7 @@ try {
         echo "   ✅ Test user created: {$testUser->name} ({$testUser->email})\n";
         echo "   📋 Assigned role: {$posOperatorRole->name}\n";
         echo "   🔑 Permissions: " . count($testUser->getAllPermissions()) . " total\n";
-        
+
         // Test specific permissions
         echo "   🧪 Permission tests:\n";
         echo "      - POS access: " . ($testUser->hasPermission('pos.access') ? '✅' : '❌') . "\n";

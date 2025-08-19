@@ -18,32 +18,32 @@ class UserForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    
+
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
-                    
+
                 DateTimePicker::make('email_verified_at')
                     ->label('Email verified at')
                     ->nullable(),
-                    
+
                 TextInput::make('password')
                     ->password()
-                    ->required(fn (Get $get): bool => ! $get('id'))
+                    ->required(fn(Get $get): bool => !$get('id'))
                     ->minLength(8)
                     ->confirmed()
-                    ->dehydrated(fn ($state): bool => filled($state))
+                    ->dehydrated(fn($state): bool => filled($state))
                     ->rules(['min:8']),
-                    
+
                 TextInput::make('password_confirmation')
                     ->password()
-                    ->required(fn (Get $get): bool => ! $get('id'))
+                    ->required(fn(Get $get): bool => !$get('id'))
                     ->minLength(8)
                     ->dehydrated(false),
-                    
+
                 Select::make('roles')
                     ->label('User Roles')
                     ->multiple()
