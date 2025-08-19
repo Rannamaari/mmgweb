@@ -2,83 +2,83 @@ name: Deploy to DigitalOcean
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Deploy to DigitalOcean
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.DROPLET_HOST }}
-        username: ${{ secrets.DROPLET_USER }}
-        key: ${{ secrets.DROPLET_SSH_KEY }}
-        script: |
-          cd /var/www/mmgweb
-          
-          # Create backup
-          sudo mkdir -p /var/backups/mmgweb
-          DATE=$(date +%Y%m%d_%H%M%S)
-          sudo tar -czf "/var/backups/mmgweb/mmgweb_backup_$DATE.tar.gz" \
-            --exclude='.git' \
-            --exclude='node_modules' \
-            --exclude='vendor' \
-            --exclude='storage/logs/*' \
-            --exclude='storage/framework/cache/*' \
-            .
-          
-          echo "📦 Backup created: mmgweb_backup_$DATE.tar.gz"
-          
-          # Pull latest changes
-          git fetch origin
-          git reset --hard origin/main
-          
-          # Update dependencies
-          composer install --no-dev --optimize-autoloader
-          npm install
-          npm run build
-          
-          # Clear caches
-          php artisan config:clear
-          php artisan route:clear
-          php artisan view:clear
-          php artisan cache:clear
-          
-          # Run migrations
-          php artisan migrate --force
-          
-          # Cache for production
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-          
-          # Set permissions
-          sudo chown -R www-data:www-data /var/www/mmgweb
-          sudo chmod -R 755 /var/www/mmgweb
-          sudo chmod -R 775 /var/www/mmgweb/storage
-          sudo chmod -R 775 /var/www/mmgweb/bootstrap/cache
-          
-          # Restart services
-          sudo systemctl restart php8.3-fpm
-          sudo systemctl restart nginx
-          
-          # Clean old backups (keep last 5)
-          cd /var/backups/mmgweb
-          ls -t mmgweb_backup_*.tar.gz | tail -n +6 | xargs -r sudo rm
-          
-          echo "✅ Deployment completed successfully!"
-          
-    - name: Notify deployment status
-      if: always()
-      run: |
-        if [ ${{ job.status }} == 'success' ]; then
-          echo "🚀 Deployment successful!"
-        else
-          echo "❌ Deployment failed!"
-        fi
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to DigitalOcean
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            cd /var/www/mmgweb
+
+            # Create backup
+            sudo mkdir -p /var/backups/mmgweb
+            DATE=$(date +%Y%m%d_%H%M%S)
+            sudo tar -czf "/var/backups/mmgweb/mmgweb_backup_$DATE.tar.gz" \
+              --exclude='.git' \
+              --exclude='node_modules' \
+              --exclude='vendor' \
+              --exclude='storage/logs/*' \
+              --exclude='storage/framework/cache/*' \
+              .
+
+            echo "📦 Backup created: mmgweb_backup_$DATE.tar.gz"
+
+            # Pull latest changes
+            git fetch origin
+            git reset --hard origin/main
+
+            # Update dependencies
+            composer install --no-dev --optimize-autoloader
+            npm install
+            npm run build
+
+            # Clear caches
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+            php artisan cache:clear
+
+            # Run migrations
+            php artisan migrate --force
+
+            # Cache for production
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # Set permissions
+            sudo chown -R www-data:www-data /var/www/mmgweb
+            sudo chmod -R 755 /var/www/mmgweb
+            sudo chmod -R 775 /var/www/mmgweb/storage
+            sudo chmod -R 775 /var/www/mmgweb/bootstrap/cache
+
+            # Restart services
+            sudo systemctl restart php8.3-fpm
+            sudo systemctl restart nginx
+
+            # Clean old backups (keep last 5)
+            cd /var/backups/mmgweb
+            ls -t mmgweb_backup_*.tar.gz | tail -n +6 | xargs -r sudo rm
+
+            echo "✅ Deployment completed successfully!"
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "🚀 Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi

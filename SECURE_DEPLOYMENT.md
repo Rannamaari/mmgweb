@@ -16,15 +16,26 @@ This deployment script has been enhanced with the following security and reliabi
 
 ## 🚀 Secure Deployment Process
 
-### Step 1: Set Environment Variables (SECURE)
+### Step 1: Secure Environment Setup (RECOMMENDED)
+
+**🔒 Use the secure setup script to avoid exposing credentials in logs**
+
+```bash
+# Download and run the secure setup script
+wget https://raw.githubusercontent.com/Rannamaari/mmgweb/main/setup-env.sh
+chmod +x setup-env.sh
+./setup-env.sh
+```
+
+### Step 2: Manual Environment Variables (ALTERNATIVE)
 
 **⚠️ IMPORTANT: Set these variables before running the script to avoid exposing credentials in logs**
 
 ```bash
-# Set your domain name
-export DOMAIN_NAME="your-actual-domain.com"
+# Set your domain name (optional, defaults to garage.micronet.mv)
+export DOMAIN_NAME="garage.micronet.mv"
 
-# Set database credentials (optional, defaults are provided)
+# Set database credentials (DB_PASSWORD is REQUIRED for security)
 export DB_HOST="micronetdb-do-user-24249606-0.d.db.ondigitalocean.com"
 export DB_PORT="25060"
 export DB_DATABASE="mmgweb"
@@ -32,7 +43,7 @@ export DB_USERNAME="doadmin"
 export DB_PASSWORD="AVNS_L5g7hboPAo5bkQEvWbu"
 ```
 
-### Step 2: Download and Run the Script
+### Step 3: Download and Run the Script
 
 ```bash
 # Download the script
@@ -45,7 +56,7 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-### Step 3: Verify Deployment
+### Step 4: Verify Deployment
 
 The script will automatically verify:
 
@@ -104,9 +115,10 @@ sudo dpkg-reconfigure -plow unattended-upgrades
 
 ### Database Security
 
--   ✅ Credentials stored in environment variables
+-   ✅ **Password required as environment variable** (no hardcoded credentials)
 -   ✅ SSL connection required
 -   ✅ Connection verification before deployment
+-   ✅ **Domain defaults to garage.micronet.mv**
 
 ### Application Security
 

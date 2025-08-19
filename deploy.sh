@@ -59,17 +59,18 @@ verify_database() {
 }
 
 # Configuration variables (should be set before running)
-DOMAIN_NAME="${DOMAIN_NAME:-your-domain.com}"
+DOMAIN_NAME="${DOMAIN_NAME:-garage.micronet.mv}"
 DB_HOST="${DB_HOST:-micronetdb-do-user-24249606-0.d.db.ondigitalocean.com}"
 DB_PORT="${DB_PORT:-25060}"
 DB_DATABASE="${DB_DATABASE:-mmgweb}"
 DB_USERNAME="${DB_USERNAME:-doadmin}"
-DB_PASSWORD="${DB_PASSWORD:-AVNS_L5g7hboPAo5bkQEvWbu}"
+# Database password should be set as environment variable for security
+DB_PASSWORD="${DB_PASSWORD}"
 
 # Validate required variables
-if [ "$DOMAIN_NAME" = "your-domain.com" ]; then
-    print_error "Please set DOMAIN_NAME environment variable before running this script"
-    print_warning "Example: export DOMAIN_NAME=mmg.mv"
+if [ -z "$DB_PASSWORD" ]; then
+    print_error "Please set DB_PASSWORD environment variable before running this script"
+    print_warning "Example: export DB_PASSWORD=your_database_password"
     exit 1
 fi
 
