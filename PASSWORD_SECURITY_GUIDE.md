@@ -51,13 +51,15 @@ exit
 ## 🔒 Password Requirements
 
 ### **Minimum Security Standards**
-- ✅ **At least 12 characters** long
-- ✅ **Uppercase letters** (A-Z)
-- ✅ **Lowercase letters** (a-z)
-- ✅ **Numbers** (0-9)
-- ✅ **Special characters** (!@#$%^&*()_+-=[]{}|;:,.<>?)
+
+-   ✅ **At least 12 characters** long
+-   ✅ **Uppercase letters** (A-Z)
+-   ✅ **Lowercase letters** (a-z)
+-   ✅ **Numbers** (0-9)
+-   ✅ **Special characters** (!@#$%^&\*()\_+-=[]{}|;:,.<>?)
 
 ### **Example Strong Passwords**
+
 ```
 ✅ K9#mN2$pL5@vX8!
 ✅ SecurePass2024!@#
@@ -66,6 +68,7 @@ exit
 ```
 
 ### **Avoid Weak Passwords**
+
 ```
 ❌ password
 ❌ admin123
@@ -80,12 +83,14 @@ exit
 ## 🛡️ Password Security Best Practices
 
 ### **1. Use a Password Manager**
-- **Bitwarden** (free, open-source)
-- **1Password** (premium)
-- **LastPass** (premium)
-- **KeePass** (free, local)
+
+-   **Bitwarden** (free, open-source)
+-   **1Password** (premium)
+-   **LastPass** (premium)
+-   **KeePass** (free, local)
 
 ### **2. Enable Two-Factor Authentication (2FA)**
+
 ```bash
 # Install 2FA package (if not already installed)
 composer require laravel/fortify
@@ -95,15 +100,17 @@ composer require laravel/fortify
 ```
 
 ### **3. Regular Password Rotation**
-- **Change admin password** every 90 days
-- **Use different passwords** for different services
-- **Never reuse passwords** across accounts
+
+-   **Change admin password** every 90 days
+-   **Use different passwords** for different services
+-   **Never reuse passwords** across accounts
 
 ### **4. Secure Password Storage**
-- **Never store passwords** in plain text
-- **Use password managers** for secure storage
-- **Enable encryption** on all devices
-- **Backup passwords** securely
+
+-   **Never store passwords** in plain text
+-   **Use password managers** for secure storage
+-   **Enable encryption** on all devices
+-   **Backup passwords** securely
 
 ---
 
@@ -118,14 +125,14 @@ Add to your Laravel application:
 protected static function boot()
 {
     parent::boot();
-    
+
     static::saving(function ($user) {
         if ($user->isDirty('password')) {
             // Enforce password policy
             if (strlen($user->password) < 12) {
                 throw new \Exception('Password must be at least 12 characters');
             }
-            
+
             if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/', $user->password)) {
                 throw new \Exception('Password must contain uppercase, lowercase, number, and special character');
             }
@@ -160,26 +167,29 @@ protected static function boot()
 ## 📊 Password Security Checklist
 
 ### **Immediate Actions**
-- [ ] **Change default admin password** (URGENT)
-- [ ] **Use strong password** (12+ characters, mixed case, numbers, symbols)
-- [ ] **Save password securely** (password manager)
-- [ ] **Test new password** (login to admin panel)
-- [ ] **Remove password from scripts** (if any)
+
+-   [ ] **Change default admin password** (URGENT)
+-   [ ] **Use strong password** (12+ characters, mixed case, numbers, symbols)
+-   [ ] **Save password securely** (password manager)
+-   [ ] **Test new password** (login to admin panel)
+-   [ ] **Remove password from scripts** (if any)
 
 ### **Ongoing Security**
-- [ ] **Enable 2FA** for admin accounts
-- [ ] **Set up login notifications**
-- [ ] **Monitor login attempts**
-- [ ] **Regular password rotation** (90 days)
-- [ ] **Secure password storage**
-- [ ] **Backup password securely**
+
+-   [ ] **Enable 2FA** for admin accounts
+-   [ ] **Set up login notifications**
+-   [ ] **Monitor login attempts**
+-   [ ] **Regular password rotation** (90 days)
+-   [ ] **Secure password storage**
+-   [ ] **Backup password securely**
 
 ### **Advanced Security**
-- [ ] **Implement password policy** in code
-- [ ] **Set up login attempt limiting**
-- [ ] **Configure session security**
-- [ ] **Enable audit logging**
-- [ ] **Regular security reviews**
+
+-   [ ] **Implement password policy** in code
+-   [ ] **Set up login attempt limiting**
+-   [ ] **Configure session security**
+-   [ ] **Enable audit logging**
+-   [ ] **Regular security reviews**
 
 ---
 
@@ -188,63 +198,68 @@ protected static function boot()
 ### **If Password is Compromised**
 
 1. **Immediately change password**
-   ```bash
-   php artisan admin:change-password --generate
-   ```
+
+    ```bash
+    php artisan admin:change-password --generate
+    ```
 
 2. **Check for unauthorized access**
-   ```bash
-   # Check login logs
-   tail -f /var/www/mmgweb/storage/logs/laravel.log | grep -i login
-   
-   # Check admin access
-   grep -i "admin@mmg.mv" /var/log/nginx/mmgweb_access.log
-   ```
+
+    ```bash
+    # Check login logs
+    tail -f /var/www/mmgweb/storage/logs/laravel.log | grep -i login
+
+    # Check admin access
+    grep -i "admin@mmg.mv" /var/log/nginx/mmgweb_access.log
+    ```
 
 3. **Review recent changes**
-   ```bash
-   # Check recent database changes
-   php artisan tinker --execute="
-       echo 'Recent user updates:';
-       App\Models\User::where('updated_at', '>=', now()->subDays(7))->get(['email', 'updated_at']);
-   "
-   ```
+
+    ```bash
+    # Check recent database changes
+    php artisan tinker --execute="
+        echo 'Recent user updates:';
+        App\Models\User::where('updated_at', '>=', now()->subDays(7))->get(['email', 'updated_at']);
+    "
+    ```
 
 4. **Enable additional security**
-   - Enable 2FA immediately
-   - Review all admin accounts
-   - Check for suspicious activity
+    - Enable 2FA immediately
+    - Review all admin accounts
+    - Check for suspicious activity
 
 ### **If You Forget the Password**
 
 1. **Reset via database** (emergency only)
-   ```bash
-   php artisan tinker --execute="
-       \$user = App\Models\User::where('email', 'admin@mmg.mv')->first();
-       \$user->password = Hash::make('NewSecurePassword123!');
-       \$user->save();
-       echo 'Password reset to: NewSecurePassword123!';
-   "
-   ```
+
+    ```bash
+    php artisan tinker --execute="
+        \$user = App\Models\User::where('email', 'admin@mmg.mv')->first();
+        \$user->password = Hash::make('NewSecurePassword123!');
+        \$user->save();
+        echo 'Password reset to: NewSecurePassword123!';
+    "
+    ```
 
 2. **Create new admin user**
-   ```bash
-   php artisan tinker --execute="
-       App\Models\User::create([
-           'name' => 'Emergency Admin',
-           'email' => 'emergency@mmg.mv',
-           'password' => Hash::make('EmergencyPass123!'),
-           'email_verified_at' => now()
-       ]);
-       echo 'Emergency admin created: emergency@mmg.mv / EmergencyPass123!';
-   "
-   ```
+    ```bash
+    php artisan tinker --execute="
+        App\Models\User::create([
+            'name' => 'Emergency Admin',
+            'email' => 'emergency@mmg.mv',
+            'password' => Hash::make('EmergencyPass123!'),
+            'email_verified_at' => now()
+        ]);
+        echo 'Emergency admin created: emergency@mmg.mv / EmergencyPass123!';
+    "
+    ```
 
 ---
 
 ## 📞 Quick Reference
 
 ### **Essential Commands**
+
 ```bash
 # Change admin password (generate)
 php artisan admin:change-password --generate
@@ -260,13 +275,15 @@ curl -I https://garage.micronet.mv/admin
 ```
 
 ### **Password Requirements**
-- **Length**: 12+ characters
-- **Uppercase**: A-Z
-- **Lowercase**: a-z
-- **Numbers**: 0-9
-- **Special**: !@#$%^&*()_+-=[]{}|;:,.<>?
+
+-   **Length**: 12+ characters
+-   **Uppercase**: A-Z
+-   **Lowercase**: a-z
+-   **Numbers**: 0-9
+-   **Special**: !@#$%^&\*()\_+-=[]{}|;:,.<>?
 
 ### **Security Recommendations**
+
 1. **Use password manager**
 2. **Enable 2FA**
 3. **Regular rotation** (90 days)
@@ -278,6 +295,7 @@ curl -I https://garage.micronet.mv/admin
 ## 🔍 Password Security Testing
 
 ### **Test Password Strength**
+
 ```bash
 # Test with curl (replace with your password)
 curl -X POST https://garage.micronet.mv/login \
@@ -286,6 +304,7 @@ curl -X POST https://garage.micronet.mv/login \
 ```
 
 ### **Check Password Hash**
+
 ```bash
 # Verify password is properly hashed
 php artisan tinker --execute="

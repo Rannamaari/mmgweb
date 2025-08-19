@@ -50,14 +50,14 @@ class ChangeAdminPassword extends Command
             $password = $this->generateSecurePassword();
             $this->info("🔑 Generated password: {$password}");
             $this->warn("⚠️  IMPORTANT: Save this password securely! It won't be shown again.");
-            
+
             if (!$this->confirm('Do you want to proceed with this password?')) {
                 $this->info("Password change cancelled.");
                 return 0;
             }
         } else {
             $password = $this->secret('Enter new password (minimum 12 characters):');
-            
+
             // Validate password
             $validator = Validator::make(['password' => $password], [
                 'password' => [
@@ -84,7 +84,7 @@ class ChangeAdminPassword extends Command
             }
 
             $confirmPassword = $this->secret('Confirm new password:');
-            
+
             if ($password !== $confirmPassword) {
                 $this->error("❌ Passwords do not match!");
                 return 1;
@@ -126,20 +126,20 @@ class ChangeAdminPassword extends Command
     {
         $length = 16;
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-        
+
         $password = '';
-        
+
         // Ensure at least one character from each required category
         $password .= 'A'; // uppercase
         $password .= 'a'; // lowercase
         $password .= '1'; // number
         $password .= '!'; // special
-        
+
         // Fill the rest randomly
         for ($i = 4; $i < $length; $i++) {
             $password .= $chars[random_int(0, strlen($chars) - 1)];
         }
-        
+
         // Shuffle the password
         return str_shuffle($password);
     }
