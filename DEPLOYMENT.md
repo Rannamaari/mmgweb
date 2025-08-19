@@ -3,16 +3,19 @@
 ## 🚀 Quick Deployment
 
 ### Prerequisites
-- DigitalOcean Droplet (Ubuntu 22.04 LTS recommended)
-- Domain name pointing to your droplet
-- DigitalOcean PostgreSQL database (already configured)
+
+-   DigitalOcean Droplet (Ubuntu 22.04 LTS recommended)
+-   Domain name pointing to your droplet
+-   DigitalOcean PostgreSQL database (already configured)
 
 ### Step 1: Connect to Your Droplet
+
 ```bash
 ssh root@your-droplet-ip
 ```
 
 ### Step 2: Run the Deployment Script
+
 ```bash
 # Download the deployment script
 wget https://raw.githubusercontent.com/Rannamaari/mmgweb/main/deploy.sh
@@ -25,7 +28,9 @@ chmod +x deploy.sh
 ```
 
 ### Step 3: Update Domain Configuration
+
 Edit the Nginx configuration:
+
 ```bash
 sudo nano /etc/nginx/sites-available/mmgweb
 ```
@@ -33,16 +38,19 @@ sudo nano /etc/nginx/sites-available/mmgweb
 Replace `your-domain.com` with your actual domain name.
 
 ### Step 4: Update Environment File
+
 ```bash
 sudo nano /var/www/mmgweb/.env
 ```
 
 Update the `APP_URL` with your domain:
+
 ```
 APP_URL=https://your-domain.com
 ```
 
 ### Step 5: Restart Services
+
 ```bash
 sudo systemctl restart nginx
 sudo systemctl restart php8.2-fpm
@@ -51,6 +59,7 @@ sudo systemctl restart php8.2-fpm
 ## 🔧 Manual Deployment Steps
 
 ### 1. System Setup
+
 ```bash
 # Update system
 sudo apt update && sudo apt upgrade -y
@@ -60,6 +69,7 @@ sudo apt install -y nginx php8.2-fpm php8.2-pgsql php8.2-mbstring php8.2-xml php
 ```
 
 ### 2. Application Setup
+
 ```bash
 # Create application directory
 sudo mkdir -p /var/www/mmgweb
@@ -76,13 +86,16 @@ npm run build
 ```
 
 ### 3. Environment Configuration
+
 Create `.env` file with your database credentials:
+
 ```bash
 cp .env.example .env
 nano .env
 ```
 
 Update these values:
+
 ```env
 APP_NAME="Micro Moto Garage"
 APP_ENV=production
@@ -99,6 +112,7 @@ DB_SSLMODE=require
 ```
 
 ### 4. Laravel Setup
+
 ```bash
 # Generate application key
 php artisan key:generate
@@ -120,12 +134,15 @@ php artisan view:cache
 ```
 
 ### 5. Nginx Configuration
+
 Create Nginx site configuration:
+
 ```bash
 sudo nano /etc/nginx/sites-available/mmgweb
 ```
 
 Add this configuration:
+
 ```nginx
 server {
     listen 80;
@@ -160,6 +177,7 @@ server {
 ```
 
 Enable the site:
+
 ```bash
 sudo ln -sf /etc/nginx/sites-available/mmgweb /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -170,11 +188,13 @@ sudo systemctl restart nginx
 ## 🔒 SSL Setup (Optional but Recommended)
 
 ### Install Certbot
+
 ```bash
 sudo apt install certbot python3-certbot-nginx
 ```
 
 ### Get SSL Certificate
+
 ```bash
 sudo certbot --nginx -d your-domain.com
 ```
@@ -183,22 +203,24 @@ sudo certbot --nginx -d your-domain.com
 
 After deployment, your application will be available at:
 
-- **Main Website**: `https://your-domain.com`
-- **Admin Panel**: `https://your-domain.com/admin`
-- **POS System**: `https://your-domain.com/pos`
-- **Booking System**: `https://your-domain.com/booking`
+-   **Main Website**: `https://your-domain.com`
+-   **Admin Panel**: `https://your-domain.com/admin`
+-   **POS System**: `https://your-domain.com/pos`
+-   **Booking System**: `https://your-domain.com/booking`
 
 ## 🔧 Admin Access
 
 Default admin credentials (created by seeder):
-- **Email**: admin@mmg.mv
-- **Password**: password
+
+-   **Email**: admin@mmg.mv
+-   **Password**: password
 
 **Important**: Change the password after first login!
 
 ## 🛠️ Maintenance Commands
 
 ### Update Application
+
 ```bash
 cd /var/www/mmgweb
 git pull origin main
@@ -211,6 +233,7 @@ sudo systemctl restart php8.2-fpm
 ```
 
 ### View Logs
+
 ```bash
 # Laravel logs
 tail -f /var/www/mmgweb/storage/logs/laravel.log
@@ -224,6 +247,7 @@ sudo tail -f /var/log/php8.2-fpm.log
 ```
 
 ### Backup Database
+
 ```bash
 # Create backup
 pg_dump "postgresql://doadmin:AVNS_L5g7hboPAo5bkQEvWbu@micronetdb-do-user-24249606-0.d.db.ondigitalocean.com:25060/mmgweb?sslmode=require" > backup_$(date +%Y%m%d_%H%M%S).sql
@@ -234,23 +258,28 @@ pg_dump "postgresql://doadmin:AVNS_L5g7hboPAo5bkQEvWbu@micronetdb-do-user-242496
 ### Common Issues
 
 1. **500 Internal Server Error**
-   - Check Laravel logs: `tail -f /var/www/mmgweb/storage/logs/laravel.log`
-   - Verify permissions: `sudo chown -R www-data:www-data /var/www/mmgweb`
+
+    - Check Laravel logs: `tail -f /var/www/mmgweb/storage/logs/laravel.log`
+    - Verify permissions: `sudo chown -R www-data:www-data /var/www/mmgweb`
 
 2. **Database Connection Error**
-   - Verify database credentials in `.env`
-   - Check if PostgreSQL is accessible from your droplet
+
+    - Verify database credentials in `.env`
+    - Check if PostgreSQL is accessible from your droplet
 
 3. **Nginx 404 Error**
-   - Verify Nginx configuration: `sudo nginx -t`
-   - Check if the site is enabled: `ls -la /etc/nginx/sites-enabled/`
+
+    - Verify Nginx configuration: `sudo nginx -t`
+    - Check if the site is enabled: `ls -la /etc/nginx/sites-enabled/`
 
 4. **Permission Denied**
-   - Set proper permissions: `sudo chmod -R 755 /var/www/mmgweb`
-   - Set storage permissions: `sudo chmod -R 775 /var/www/mmgweb/storage`
+    - Set proper permissions: `sudo chmod -R 755 /var/www/mmgweb`
+    - Set storage permissions: `sudo chmod -R 775 /var/www/mmgweb/storage`
 
 ### Support
+
 If you encounter issues, check:
+
 1. Laravel logs in `/var/www/mmgweb/storage/logs/`
 2. Nginx logs in `/var/log/nginx/`
 3. PHP-FPM logs in `/var/log/php8.2-fpm.log`
