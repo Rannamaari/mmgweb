@@ -37,31 +37,35 @@ sudo crontab -e
 ## 🛡️ Security Features Applied
 
 ### **SSL/TLS Security**
-- ✅ **Let's Encrypt SSL Certificate** (free, trusted)
-- ✅ **Automatic renewal** (daily cron job)
-- ✅ **HTTPS enforcement** (redirects HTTP to HTTPS)
-- ✅ **HSTS headers** (HTTP Strict Transport Security)
-- ✅ **Modern SSL configuration** (TLS 1.2+)
+
+-   ✅ **Let's Encrypt SSL Certificate** (free, trusted)
+-   ✅ **Automatic renewal** (daily cron job)
+-   ✅ **HTTPS enforcement** (redirects HTTP to HTTPS)
+-   ✅ **HSTS headers** (HTTP Strict Transport Security)
+-   ✅ **Modern SSL configuration** (TLS 1.2+)
 
 ### **Security Headers**
-- ✅ **X-Frame-Options**: Prevents clickjacking
-- ✅ **X-Content-Type-Options**: Prevents MIME sniffing
-- ✅ **X-XSS-Protection**: XSS protection
-- ✅ **Referrer-Policy**: Controls referrer information
-- ✅ **Content-Security-Policy**: Prevents XSS and injection attacks
-- ✅ **Strict-Transport-Security**: Forces HTTPS
+
+-   ✅ **X-Frame-Options**: Prevents clickjacking
+-   ✅ **X-Content-Type-Options**: Prevents MIME sniffing
+-   ✅ **X-XSS-Protection**: XSS protection
+-   ✅ **Referrer-Policy**: Controls referrer information
+-   ✅ **Content-Security-Policy**: Prevents XSS and injection attacks
+-   ✅ **Strict-Transport-Security**: Forces HTTPS
 
 ### **Nginx Security**
-- ✅ **Secure server configuration**
-- ✅ **Hidden server version**
-- ✅ **Rate limiting** (optional)
-- ✅ **Request size limits**
+
+-   ✅ **Secure server configuration**
+-   ✅ **Hidden server version**
+-   ✅ **Rate limiting** (optional)
+-   ✅ **Request size limits**
 
 ---
 
 ## 🔧 SSL Configuration Details
 
 ### **Certificate Information**
+
 ```bash
 # View certificate details
 sudo certbot certificates
@@ -74,23 +78,28 @@ openssl x509 -in /etc/letsencrypt/live/garage.micronet.mv/fullchain.pem -text -n
 ```
 
 ### **Nginx SSL Configuration**
+
 The script automatically configures Nginx with:
-- **SSL certificate paths**
-- **HTTP to HTTPS redirect**
-- **Security headers**
-- **Optimized SSL settings**
+
+-   **SSL certificate paths**
+-   **HTTP to HTTPS redirect**
+-   **Security headers**
+-   **Optimized SSL settings**
 
 ---
 
 ## 📊 SSL Testing & Monitoring
 
 ### **SSL Labs Test**
+
 Test your SSL configuration:
+
 ```
 https://www.ssllabs.com/ssltest/analyze.html?d=garage.micronet.mv
 ```
 
 ### **Manual Testing**
+
 ```bash
 # Test HTTPS connection
 curl -I https://garage.micronet.mv
@@ -103,6 +112,7 @@ openssl s_client -connect garage.micronet.mv:443 -servername garage.micronet.mv
 ```
 
 ### **Monitoring Commands**
+
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -119,6 +129,7 @@ sudo certbot renew --dry-run
 ## 🔐 Additional Security Measures
 
 ### **1. Firewall Configuration**
+
 ```bash
 # Install and configure UFW
 sudo apt install ufw
@@ -128,6 +139,7 @@ sudo ufw enable
 ```
 
 ### **2. Fail2ban Protection**
+
 ```bash
 # Install Fail2ban
 sudo apt install fail2ban
@@ -139,6 +151,7 @@ sudo systemctl start fail2ban
 ```
 
 ### **3. Regular Security Updates**
+
 ```bash
 # Set up automatic security updates
 sudo apt install unattended-upgrades
@@ -146,6 +159,7 @@ sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 
 ### **4. Database Security**
+
 ```bash
 # Ensure database is only accessible locally
 sudo netstat -tlnp | grep :5432
@@ -157,30 +171,34 @@ sudo netstat -tlnp | grep :5432
 ## 🚨 Security Checklist
 
 ### **SSL Certificate**
-- [ ] SSL certificate installed and working
-- [ ] HTTP redirects to HTTPS
-- [ ] Certificate auto-renewal configured
-- [ ] SSL Labs grade A or A+
+
+-   [ ] SSL certificate installed and working
+-   [ ] HTTP redirects to HTTPS
+-   [ ] Certificate auto-renewal configured
+-   [ ] SSL Labs grade A or A+
 
 ### **Security Headers**
-- [ ] X-Frame-Options: SAMEORIGIN
-- [ ] X-Content-Type-Options: nosniff
-- [ ] X-XSS-Protection: 1; mode=block
-- [ ] Strict-Transport-Security: max-age=31536000
-- [ ] Content-Security-Policy configured
+
+-   [ ] X-Frame-Options: SAMEORIGIN
+-   [ ] X-Content-Type-Options: nosniff
+-   [ ] X-XSS-Protection: 1; mode=block
+-   [ ] Strict-Transport-Security: max-age=31536000
+-   [ ] Content-Security-Policy configured
 
 ### **Server Security**
-- [ ] Firewall enabled (UFW)
-- [ ] Fail2ban installed and configured
-- [ ] Automatic security updates enabled
-- [ ] SSH key authentication only
-- [ ] Database not exposed externally
+
+-   [ ] Firewall enabled (UFW)
+-   [ ] Fail2ban installed and configured
+-   [ ] Automatic security updates enabled
+-   [ ] SSH key authentication only
+-   [ ] Database not exposed externally
 
 ### **Application Security**
-- [ ] Laravel debug mode disabled
-- [ ] Admin password changed
-- [ ] Regular backups configured
-- [ ] Log monitoring enabled
+
+-   [ ] Laravel debug mode disabled
+-   [ ] Admin password changed
+-   [ ] Regular backups configured
+-   [ ] Log monitoring enabled
 
 ---
 
@@ -189,6 +207,7 @@ sudo netstat -tlnp | grep :5432
 ### **SSL Certificate Issues**
 
 **Problem**: Certificate not obtained
+
 ```bash
 # Check domain accessibility
 curl -I http://garage.micronet.mv
@@ -201,6 +220,7 @@ sudo certbot --nginx -d garage.micronet.mv --debug
 ```
 
 **Problem**: Certificate renewal failing
+
 ```bash
 # Test renewal manually
 sudo certbot renew --dry-run
@@ -212,6 +232,7 @@ sudo tail -f /var/log/letsencrypt/letsencrypt.log
 ### **Nginx SSL Issues**
 
 **Problem**: SSL handshake failed
+
 ```bash
 # Check Nginx configuration
 sudo nginx -t
@@ -226,6 +247,7 @@ sudo systemctl restart nginx
 ### **Security Header Issues**
 
 **Problem**: Headers not showing
+
 ```bash
 # Check Nginx configuration
 sudo grep -r "security-headers" /etc/nginx/
@@ -242,6 +264,7 @@ curl -I https://garage.micronet.mv
 ## 📈 Performance Optimization
 
 ### **SSL Performance**
+
 ```bash
 # Enable SSL session caching
 # Add to Nginx config:
@@ -254,16 +277,18 @@ ssl_stapling_verify on;
 ```
 
 ### **Security vs Performance**
-- ✅ **SSL session caching** improves performance
-- ✅ **HSTS** improves security (one-time setup)
-- ✅ **Security headers** have minimal performance impact
-- ✅ **Rate limiting** can be adjusted based on traffic
+
+-   ✅ **SSL session caching** improves performance
+-   ✅ **HSTS** improves security (one-time setup)
+-   ✅ **Security headers** have minimal performance impact
+-   ✅ **Rate limiting** can be adjusted based on traffic
 
 ---
 
 ## 🆘 Emergency Procedures
 
 ### **Certificate Expired**
+
 ```bash
 # Force certificate renewal
 sudo certbot renew --force-renewal
@@ -273,6 +298,7 @@ sudo certbot --nginx -d garage.micronet.mv --force-renewal
 ```
 
 ### **Security Breach**
+
 ```bash
 # Check for unauthorized access
 sudo tail -f /var/log/nginx/access.log
@@ -287,6 +313,7 @@ sudo rkhunter --check
 ```
 
 ### **Rollback SSL Changes**
+
 ```bash
 # Restore previous Nginx configuration
 sudo cp /etc/nginx/sites-available/mmgweb.backup /etc/nginx/sites-available/mmgweb
@@ -303,6 +330,7 @@ sudo systemctl restart nginx
 ## 📞 Quick Reference
 
 ### **Essential Commands**
+
 ```bash
 # SSL certificate status
 sudo certbot certificates
@@ -322,6 +350,7 @@ sudo certbot renew
 ```
 
 ### **Security Testing**
+
 ```bash
 # SSL Labs test
 https://www.ssllabs.com/ssltest/analyze.html?d=garage.micronet.mv

@@ -100,16 +100,25 @@ add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsaf
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 EOF
 
-# Update Nginx configuration with security headers
+# Update Nginx configuration with proper SSL setup
+print_status "Setting up proper Nginx configuration..."
+
+# Backup existing configuration
 if [ -f "/etc/nginx/sites-available/mmgweb" ]; then
-    print_status "Updating Nginx configuration with security headers..."
-    sed -i '/add_header X-Frame-Options/d' /etc/nginx/sites-available/mmgweb
-    sed -i '/add_header X-Content-Type-Options/d' /etc/nginx/sites-available/mmgweb
-    sed -i '/include snippets\/security-headers.conf;/d' /etc/nginx/sites-available/mmgweb
-    
-    # Add security headers include
-    sed -i '/server {/a\    include snippets/security-headers.conf;' /etc/nginx/sites-available/mmgweb
+    cp /etc/nginx/sites-available/mmgweb /etc/nginx/sites-available/mmgweb.backup
+    print_success "Backup created: /etc/nginx/sites-available/mmgweb.backup"
 fi
+
+# Download and apply the proper Nginx configuration
+wget -O /etc/nginx/sites-available/mmgweb https://raw.githubusercontent.com/Rannamaari/mmgweb/main/nginx-config.conf
+
+# Create symbolic link if it doesn't exist
+if [ ! -L "/etc/nginx/sites-enabled/mmgweb" ]; then
+    ln -sf /etc/nginx/sites-available/mmgweb /etc/nginx/sites-enabled/
+fi
+
+# Remove default site
+rm -f /etc/nginx/sites-enabled/default
 
 # Test Nginx configuration
 print_status "Testing Nginx configuration..."
