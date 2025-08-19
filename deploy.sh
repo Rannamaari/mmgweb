@@ -311,6 +311,11 @@ fi
 # Set up SSL with Let's Encrypt (optional)
 print_status "SSL Setup Instructions:"
 echo "To enable SSL, run:"
+echo "wget https://raw.githubusercontent.com/Rannamaari/mmgweb/main/ssl-setup.sh"
+echo "chmod +x ssl-setup.sh"
+echo "sudo ./ssl-setup.sh"
+echo ""
+echo "Or manually:"
 echo "sudo apt install certbot python3-certbot-nginx"
 echo "sudo certbot --nginx -d ${DOMAIN_NAME}"
 
