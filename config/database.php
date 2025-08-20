@@ -97,7 +97,12 @@ return [
             'sslmode' => env('DB_SSLMODE', 'require'),
             'options' => [
                 PDO::ATTR_EMULATE_PREPARES => true,
+                PDO::ATTR_STRINGIFY_FETCHES => true,
             ],
+            'after_connect' => function ($connection) {
+                $connection->statement('SET search_path TO public');
+                $connection->statement('SET timezone TO \'UTC\'');
+            },
         ],
 
         'sqlsrv' => [

@@ -49,11 +49,9 @@ class RolesTable
 
                 BadgeColumn::make('is_active')
                     ->label('Status')
-                    ->boolean()
-                    ->trueColor('success')
-                    ->falseColor('danger')
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle'),
+                    ->formatStateUsing(fn ($state) => $state ? 'Active' : 'Inactive')
+                    ->color(fn ($state) => $state ? 'success' : 'danger')
+                    ->icon(fn ($state) => $state ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle'),
 
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -68,9 +66,19 @@ class RolesTable
             ->filters([
                 SelectFilter::make('is_active')
                     ->options([
-                        '1' => 'Active',
-                        '0' => 'Inactive',
+                        'true' => 'Active',
+                        'false' => 'Inactive',
                     ])
+                    ->query(function ($query, array $data) {
+                        if (isset($data['values'])) {
+                            if (in_array('true', $data['values'])) {
+                                $query->whereRaw('is_active = true');
+                            }
+                            if (in_array('false', $data['values'])) {
+                                $query->whereRaw('is_active = false');
+                            }
+                        }
+                    })
                     ->label('Status'),
             ])
             ->actions([

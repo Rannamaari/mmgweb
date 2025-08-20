@@ -6,7 +6,7 @@ use App\Models\Role;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class UserForm
@@ -36,13 +36,15 @@ class UserForm
                     ->minLength(8)
                     ->confirmed()
                     ->dehydrated(fn($state): bool => filled($state))
-                    ->rules(['min:8']),
+                    ->rules(['min:8'])
+                    ->live(onBlur: true),
 
                 TextInput::make('password_confirmation')
                     ->password()
                     ->required(fn(Get $get): bool => !$get('id'))
                     ->minLength(8)
-                    ->dehydrated(false),
+                    ->dehydrated(false)
+                    ->live(onBlur: true),
 
                 Select::make('roles')
                     ->label('User Roles')
@@ -50,7 +52,7 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->preload()
                     ->searchable()
-                    ->options(Role::where('is_active', true)->pluck('name', 'id'))
+                    ->options(Role::whereRaw('is_active = true')->pluck('name', 'id'))
                     ->helperText('Select roles to assign to this user. Users can have multiple roles.'),
             ]);
     }

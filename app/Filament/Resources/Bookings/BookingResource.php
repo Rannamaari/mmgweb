@@ -48,4 +48,29 @@ class BookingResource extends Resource
             'edit' => EditBooking::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasPermission('admin.bookings');
+    }
+
+    public static function canView(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->hasPermission('admin.bookings');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->hasPermission('admin.bookings');
+    }
+
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->hasPermission('admin.bookings');
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return auth()->user()->hasPermission('admin.bookings');
+    }
 }

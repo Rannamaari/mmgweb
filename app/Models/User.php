@@ -129,4 +129,6 @@ class User extends Authenticatable implements FilamentUser
         // Check if user has admin access permission
         return $this->hasPermission('admin.access');
     }
+
+
 }
