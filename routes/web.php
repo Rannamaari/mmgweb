@@ -178,7 +178,7 @@ Route::middleware('auth')->group(function () {
         $query = $request->get('q', '');
         $type = $request->get('type', '');
 
-        $products = App\Models\Product::where('is_active', true);
+        $products = App\Models\Product::whereRaw('is_active = true');
 
         // Apply search filter if query provided
         if (!empty($query)) {
