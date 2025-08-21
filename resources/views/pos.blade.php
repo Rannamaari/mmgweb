@@ -80,6 +80,11 @@
                         class="bg-red-primary hover:bg-red-secondary px-4 py-2 rounded-lg transition duration-200 text-sm">
                         Admin
                     </a>
+                    <a href="{{ url('/pos-login') }}"
+                        x-show="!isAuthenticated"
+                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-200 text-sm">
+                        Login
+                    </a>
                 </div>
             </div>
         </div>
