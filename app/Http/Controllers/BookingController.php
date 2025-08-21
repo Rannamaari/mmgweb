@@ -63,7 +63,7 @@ class BookingController extends Controller
                 'plate_number' => $request->plate_number,
                 'preferred_date' => $request->preferred_date,
                 'preferred_time' => $request->preferred_time,
-                'pickup_needed' => $request->boolean('pickup_needed'),
+                'pickup_needed' => $request->boolean('pickup_needed') ? 'true' : 'false',
                 'pickup_address' => $request->pickup_address,
                 'issue_description' => $request->issue_description,
                 'status' => 'pending',
