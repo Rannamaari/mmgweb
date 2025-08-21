@@ -9,6 +9,15 @@
         content="Book your motorcycle service with Micro Moto Garage. Fast, reliable service in Malé.">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7NSJ7WHVP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-E7NSJ7WHVP');
+    </script>
     <script>
         tailwind.config = {
             theme: {
