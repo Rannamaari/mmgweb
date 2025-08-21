@@ -13,16 +13,6 @@ Route::get('/booking', [App\Http\Controllers\BookingController::class, 'show'])-
 Route::post('/booking', [App\Http\Controllers\BookingController::class, 'store'])->name('booking.store')->middleware('web');
 Route::post('/booking-test', [App\Http\Controllers\BookingController::class, 'testStore'])->name('booking.test');
 
-// Quick POS login route
-Route::get('/pos-login', function () {
-    $user = App\Models\User::where('email', 'admin@mmg.local')->first();
-    if ($user) {
-        Auth::login($user);
-        return redirect('/pos');
-    }
-    return response()->json(['error' => 'Admin user not found'], 404);
-})->name('pos.login');
-
 Route::middleware('auth')->group(function () {
     Route::get('/pos', function () {
         return view('pos');
@@ -107,52 +97,6 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/web-api/customers', function (Illuminate\Http\Request $request) {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'motorcycle_make' => 'required|string|max:255',
-            'motorcycle_model' => 'required|string|max:255',
-            'motorcycle_plate' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
-        ]);
-
-        try {
-            // Create customer
-            $customer = App\Models\Customer::create([
-                'name' => $request->name,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'address' => $request->address,
-            ]);
-
-            // Create motorcycle and link to customer
-            $motorcycle = App\Models\Motorcycle::create([
-                'customer_id' => $customer->id,
-                'make' => $request->motorcycle_make,
-                'model' => $request->motorcycle_model,
-                'plate_no' => $request->motorcycle_plate,
-                'year' => null, // Can be updated later
-                'color' => null, // Can be updated later
-                'vin' => null, // Can be updated later
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'customer' => $customer,
-                'motorcycle' => $motorcycle,
-                'message' => 'Customer and motorcycle created successfully!'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create customer: ' . $e->getMessage()
-            ], 400);
-        }
-    });
-
-    // Test route for customer creation (bypasses CSRF)
-    Route::post('/web-api/customers-test', function (Illuminate\Http\Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
@@ -286,6 +230,7 @@ Route::middleware('auth')->group(function () {
                 $items[] = [
                     'product' => $product,
                     'qty' => $cartItem['qty'],
+                    'unit_price' => $cartItem['price'], // Use the modified price from cart
                 ];
             }
 
@@ -295,7 +240,7 @@ Route::middleware('auth')->group(function () {
                 'motorcycle_id' => null,
                 'discount' => 0,
                 'tax' => 0,
-                'notes' => 'POS Sale',
+                'notes' => null,
             ];
 
             // Auto-link customer's motorcycle if available

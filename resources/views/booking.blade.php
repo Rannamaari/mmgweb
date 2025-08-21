@@ -305,7 +305,7 @@
 
             // Collect form data
             const formData = new FormData(this);
-            
+
             // Add CSRF token to form data
             const csrfToken = document.querySelector('input[name="_token"]').value;
             formData.append('_token', csrfToken);

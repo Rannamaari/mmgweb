@@ -80,11 +80,6 @@
                         class="bg-red-primary hover:bg-red-secondary px-4 py-2 rounded-lg transition duration-200 text-sm">
                         Admin
                     </a>
-                    <a href="{{ url('/pos-login') }}"
-                        x-show="!isAuthenticated"
-                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-200 text-sm">
-                        Login
-                    </a>
                 </div>
             </div>
         </div>
@@ -229,6 +224,29 @@
                                                 × ރ<span x-text="parseFloat(item.price).toFixed(2)"></span>
                                             </span>
                                         </div>
+
+                                        <!-- Price Editing -->
+                                        <div class="flex items-center space-x-2 mt-2">
+                                            <button @click="startEditPrice(index)" x-show="!item.editingPrice"
+                                                class="text-xs text-blue-400 hover:text-blue-300 transition duration-200">
+                                                ✏️ Edit Price
+                                            </button>
+                                            <div x-show="item.editingPrice" class="flex items-center space-x-2">
+                                                <span class="text-xs text-gray-400">ރ</span>
+                                                <input type="number" x-model.number="item.newPrice"
+                                                    @keydown.enter="savePrice(index)"
+                                                    @keydown.escape="cancelEditPrice(index)" min="0" step="0.01"
+                                                    class="w-20 px-2 py-1 bg-black-primary border border-gray-600 rounded text-xs text-white focus:outline-none focus:border-blue-400">
+                                                <button @click="savePrice(index)"
+                                                    class="text-xs text-green-400 hover:text-green-300 transition duration-200">
+                                                    ✓
+                                                </button>
+                                                <button @click="cancelEditPrice(index)"
+                                                    class="text-xs text-red-400 hover:text-red-300 transition duration-200">
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="text-right ml-4">
@@ -273,17 +291,14 @@
                                     </template>
                                 </div>
                             </div>
-                            <button @click="showCustomerModal = true"
-                                class="px-4 py-3 bg-red-primary hover:bg-red-secondary text-white rounded-lg transition duration-200 flex items-center justify-center">
-                                <span class="text-lg">➕</span>
-                            </button>
+
                         </div>
                         <div x-show="selectedCustomer" class="mt-2">
                             <div class="flex items-center justify-between">
                                 <div class="text-sm text-gray-400">
                                     Selected: <span class="text-white" x-text="getSelectedCustomerName()"></span>
                                 </div>
-                                <button @click="clearCustomer()" 
+                                <button @click="clearCustomer()"
                                     class="text-xs text-red-400 hover:text-red-300 transition duration-200">
                                     Clear
                                 </button>
@@ -315,7 +330,7 @@
                     </div>
                     <div class="flex justify-between text-gray-300">
                         <span>Tax (0%):</span>
-                        <span>₹0.00</span>
+                        <span>ރ0.00</span>
                     </div>
                     <div class="flex justify-between text-xl font-bold text-white border-t border-gray-600 pt-3">
                         <span>Total:</span>
@@ -356,90 +371,7 @@
         </div>
     </div>
 
-    <!-- Customer Creation Modal -->
-    <div x-show="showCustomerModal" x-cloak
-        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
-        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100">
-        <div class="bg-black-secondary border border-red-primary rounded-lg p-8 max-w-md mx-4 w-full"
-            x-transition:enter="transition ease-out duration-300 transform"
-            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
-                        <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-white">➕ Add Customer</h3>
-                <button @click="closeCustomerModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
-            </div>
-            
-            <div class="space-y-4">
-                <!-- Customer Information -->
-                <div class="border-b border-gray-600 pb-4">
-                    <h4 class="text-lg font-semibold text-white mb-4">👤 Customer Information</h4>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
-                            <input type="text" x-model="newCustomer.name" placeholder="Customer name"
-                                class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Phone *</label>
-                            <input type="tel" x-model="newCustomer.phone" placeholder="Phone number"
-                                class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Email (Optional)</label>
-                            <input type="email" x-model="newCustomer.email" placeholder="Email address"
-                                class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Address (Optional)</label>
-                            <textarea x-model="newCustomer.address" placeholder="Customer address" rows="2"
-                                class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200 resize-none"></textarea>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Motorcycle Information -->
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">🏍️ Motorcycle Information</h4>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Brand *</label>
-                                <input type="text" x-model="newCustomer.motorcycle_make" placeholder="e.g., Honda, Yamaha"
-                                    class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Model *</label>
-                                <input type="text" x-model="newCustomer.motorcycle_model" placeholder="e.g., CBR150R, R15"
-                                    class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Plate Number (Optional)</label>
-                            <input type="text" x-model="newCustomer.motorcycle_plate" placeholder="e.g., A-12345"
-                                class="w-full px-3 py-3 bg-gray-dark border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-primary transition duration-200">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex space-x-3 mt-6">
-                <button @click="closeCustomerModal()"
-                    class="flex-1 bg-gray-dark hover:bg-gray-600 text-white py-3 px-4 rounded-lg transition duration-200">
-                    Cancel
-                </button>
-                <button @click="createCustomer()" :disabled="creatingCustomer"
-                    class="flex-1 bg-red-primary hover:bg-red-secondary disabled:bg-gray-600 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg font-semibold transition duration-200 flex items-center justify-center space-x-2">
-                    <span x-show="!creatingCustomer">➕</span>
-                    <span x-show="creatingCustomer" class="animate-spin">⏳</span>
-                    <span x-text="creatingCustomer ? 'Creating...' : 'Create'"></span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Success Modal -->
     <div x-show="showSuccessModal" x-cloak
@@ -492,17 +424,7 @@
                 lastInvoiceId: null,
                 filterType: 'all',
                 isAuthenticated: false,
-                showCustomerModal: false,
-                creatingCustomer: false,
-                newCustomer: {
-                    name: '',
-                    phone: '',
-                    email: '',
-                    address: '',
-                    motorcycle_make: '',
-                    motorcycle_model: '',
-                    motorcycle_plate: ''
-                },
+
                 customerSearch: '',
                 filteredCustomers: [],
 
@@ -606,9 +528,11 @@
                             id: product.id,
                             name: product.name,
                             price: parseFloat(product.price),
+                            originalPrice: parseFloat(product.price), // Store original price
                             qty: 1,
                             type: product.type,
-                            stock_qty: product.stock_qty
+                            stock_qty: product.stock_qty,
+                            editingPrice: false
                         });
                     }
 
@@ -700,56 +624,46 @@
                     this.lastInvoiceId = null;
                 },
 
-                async createCustomer() {
-                    if (!this.newCustomer.name || !this.newCustomer.phone) {
-                        alert('Please fill in at least name and phone number');
-                        return;
-                    }
-
-                    if (!this.newCustomer.motorcycle_make || !this.newCustomer.motorcycle_model) {
-                        alert('Please fill in motorcycle brand and model');
-                        return;
-                    }
-
-                    this.creatingCustomer = true;
-
-                    try {
-                        const response = await fetch('/web-api/customers', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                            },
-                            body: JSON.stringify(this.newCustomer)
-                        });
-
-                        const result = await response.json();
-
-                        if (response.ok && result.success) {
-                            // Add new customer to the list
-                            this.customers.push(result.customer);
-                            // Select the new customer
-                            this.selectedCustomer = result.customer.id;
-                            this.customerSearch = result.customer.name;
-                            // Close modal and reset form
-                            this.showCustomerModal = false;
-                            this.newCustomer = { name: '', phone: '', email: '', address: '', motorcycle_make: '', motorcycle_model: '', motorcycle_plate: '' };
-                            // Show success message
-                            alert('✅ Customer created successfully!');
-                        } else {
-                            alert('❌ Failed to create customer: ' + (result.message || 'Unknown error'));
-                        }
-                    } catch (error) {
-                        console.error('Customer creation error:', error);
-                        alert('❌ Error creating customer: ' + error.message);
-                    } finally {
-                        this.creatingCustomer = false;
-                    }
+                // Price editing functions
+                startEditPrice(index) {
+                    this.cart[index].editingPrice = true;
+                    this.cart[index].newPrice = this.cart[index].price;
+                    // Focus the input field after a short delay
+                    setTimeout(() => {
+                        const input = document.querySelector(`input[x-model.number="item.newPrice"]`);
+                        if (input) input.focus();
+                    }, 100);
                 },
 
-                closeCustomerModal() {
-                    this.showCustomerModal = false;
-                    this.newCustomer = { name: '', phone: '', email: '', address: '', motorcycle_make: '', motorcycle_model: '', motorcycle_plate: '' };
+                savePrice(index) {
+                    const item = this.cart[index];
+                    const newPrice = parseFloat(item.newPrice);
+
+                    // Validate price
+                    if (isNaN(newPrice) || newPrice < 0) {
+                        alert('Please enter a valid price (minimum 0)');
+                        return;
+                    }
+
+                    // Update the price
+                    item.price = newPrice;
+                    item.editingPrice = false;
+                    delete item.newPrice;
+
+                    // Update total
+                    this.updateTotal();
+
+                    // Show feedback
+                    this.$dispatch('price-updated', {
+                        product: item.name,
+                        oldPrice: item.originalPrice || item.price,
+                        newPrice: newPrice
+                    });
+                },
+
+                cancelEditPrice(index) {
+                    this.cart[index].editingPrice = false;
+                    delete this.cart[index].newPrice;
                 },
 
                 filterCustomers() {

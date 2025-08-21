@@ -10,7 +10,8 @@ class InvoiceService
 {
     public function __construct(
         private InventoryService $inventoryService
-    ) {}
+    ) {
+    }
 
     public function generateInvoiceNumber(): string
     {
@@ -19,8 +20,8 @@ class InvoiceService
             ->orderBy('id', 'desc')
             ->first();
 
-        $sequence = $lastInvoice ? 
-            (int) substr($lastInvoice->number, -3) + 1 : 
+        $sequence = $lastInvoice ?
+            (int) substr($lastInvoice->number, -3) + 1 :
             1;
 
         return 'INV-' . $date . '-' . str_pad($sequence, 3, '0', STR_PAD_LEFT);
@@ -29,7 +30,7 @@ class InvoiceService
     public function calculateTotals(Invoice $invoice): void
     {
         $subtotal = $invoice->items->sum('line_total');
-        
+
         $invoice->update([
             'subtotal' => $subtotal,
             'total' => $subtotal - $invoice->discount + $invoice->tax,
@@ -63,7 +64,7 @@ class InvoiceService
         }
 
         $paidAmount = $invoice->payments->sum('amount');
-        
+
         if ($paidAmount < $invoice->total) {
             throw ValidationException::withMessages([
                 'payments' => 'Total payments must equal invoice total to mark as paid.'
@@ -82,7 +83,7 @@ class InvoiceService
         }
 
         $invoice->update(['status' => 'cancelled']);
-        
+
         // Note: For MVP, we don't restock cancelled invoices
         // This could be added later if needed
     }
@@ -108,13 +109,16 @@ class InvoiceService
 
         // Create invoice items
         foreach ($items as $item) {
+            // Use custom unit price if provided, otherwise use product price
+            $unitPrice = $item['unit_price'] ?? $item['product']->price;
+
             $invoice->items()->create([
                 'item_type' => $item['product']->type === 'part' ? 'product' : 'service',
                 'item_id' => $item['product']->id,
                 'description' => $item['product']->name,
                 'qty' => $item['qty'],
-                'unit_price' => $item['product']->price,
-                'line_total' => $item['qty'] * $item['product']->price,
+                'unit_price' => $unitPrice,
+                'line_total' => $item['qty'] * $unitPrice,
             ]);
         }
 

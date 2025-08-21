@@ -274,7 +274,7 @@
                             <div class="text-sm text-gray-400">Happy Customers</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-red-primary">24/7</div>
+                            <div class="text-2xl font-bold text-red-primary">10AM to 6PM</div>
                             <div class="text-sm text-gray-400">Emergency Support</div>
                         </div>
                     </div>
@@ -345,7 +345,8 @@
                                 <div class="text-red-primary mr-4 text-2xl">🕒</div>
                                 <div>
                                     <p class="font-semibold">Operating Hours</p>
-                                    <p class="text-gray-400">8:00 AM - 10:00 PM (Daily)</p>
+                                    <p class="text-gray-400">8:00 AM - 10:00 PM</p>
+                                    <p class="text-gray-400 text-sm">Friday: Closed</p>
                                 </div>
                             </div>
                         </div>
