@@ -56,7 +56,9 @@ class ProductForm
 
                 Toggle::make('is_active')
                     ->label('Active')
-                    ->default(true),
+                    ->default(true)
+                    ->formatStateUsing(fn($state) => (bool) $state)
+                    ->dehydrateStateUsing(fn($state) => (bool) $state),
             ])
             ->columns(3);
     }

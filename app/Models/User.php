@@ -80,7 +80,7 @@ class User extends Authenticatable implements FilamentUser
     public function hasPermission(string $permission): bool
     {
         return $this->roles()
-            ->whereRaw('is_active = true')
+            ->where('is_active', true)
             ->get()
             ->some(fn($role) => $role->hasPermission($permission));
     }
@@ -91,7 +91,7 @@ class User extends Authenticatable implements FilamentUser
     public function hasAnyPermission(array $permissions): bool
     {
         return $this->roles()
-            ->whereRaw('is_active = true')
+            ->where('is_active', true)
             ->get()
             ->some(fn($role) => $role->hasAnyPermission($permissions));
     }
@@ -102,7 +102,7 @@ class User extends Authenticatable implements FilamentUser
     public function hasAllPermissions(array $permissions): bool
     {
         return $this->roles()
-            ->whereRaw('is_active = true')
+            ->where('is_active', true)
             ->get()
             ->every(fn($role) => $role->hasAllPermissions($permissions));
     }
@@ -113,7 +113,7 @@ class User extends Authenticatable implements FilamentUser
     public function getAllPermissions(): array
     {
         return $this->roles()
-            ->whereRaw('is_active = true')
+            ->where('is_active', true)
             ->get()
             ->flatMap(fn($role) => $role->permissions ?? [])
             ->unique()

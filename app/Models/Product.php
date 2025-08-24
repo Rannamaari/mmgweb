@@ -48,4 +48,9 @@ class Product extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function setIsActiveAttribute($value)
+    {
+        $this->attributes['is_active'] = $value ? 'true' : 'false';
+    }
 }

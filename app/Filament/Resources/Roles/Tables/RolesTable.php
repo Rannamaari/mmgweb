@@ -72,10 +72,10 @@ class RolesTable
                     ->query(function ($query, array $data) {
                         if (isset($data['values'])) {
                             if (in_array('true', $data['values'])) {
-                                $query->whereRaw('is_active = true');
+                                $query->where('is_active', true);
                             }
                             if (in_array('false', $data['values'])) {
-                                $query->whereRaw('is_active = false');
+                                $query->where('is_active', false);
                             }
                         }
                     })

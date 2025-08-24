@@ -44,6 +44,8 @@ class RoleForm
                 Toggle::make('is_active')
                     ->label('Active')
                     ->default(true)
+                    ->formatStateUsing(fn($state) => (bool) $state)
+                    ->dehydrateStateUsing(fn($state) => (bool) $state)
                     ->helperText('Inactive roles cannot be assigned to users'),
             ]);
     }

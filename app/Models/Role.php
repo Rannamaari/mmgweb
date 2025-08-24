@@ -216,4 +216,9 @@ class Role extends Model
             ]
         ];
     }
+
+    public function setIsActiveAttribute($value)
+    {
+        $this->attributes['is_active'] = $value ? 'true' : 'false';
+    }
 }

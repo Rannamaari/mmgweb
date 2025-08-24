@@ -52,7 +52,7 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->preload()
                     ->searchable()
-                    ->options(Role::whereRaw('is_active = true')->pluck('name', 'id'))
+                    ->options(Role::where('is_active', true)->pluck('name', 'id'))
                     ->helperText('Select roles to assign to this user. Users can have multiple roles.'),
             ]);
     }

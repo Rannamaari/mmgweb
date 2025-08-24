@@ -46,7 +46,9 @@ class InvoiceForm
                     ->required()
                     ->default('unpaid'),
                 Toggle::make('is_cash_bill')
-                    ->required(),
+                    ->required()
+                    ->formatStateUsing(fn($state) => (bool) $state)
+                    ->dehydrateStateUsing(fn($state) => (bool) $state),
                 Textarea::make('notes')
                     ->columnSpanFull(),
                 TextInput::make('created_by')
